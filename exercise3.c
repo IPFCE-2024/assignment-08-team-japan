@@ -1,3 +1,4 @@
+
 /*
  * Exercise 3: Queue Implementation using Singly-Linked Lists
  * Assignment 8 - IPFCE 2025
@@ -15,6 +16,9 @@
  * Post-condition: queue is empty with front and rear set to NULL
  */
 void initialize(queue *q) {
+    q->rear = NULL;
+    q->front = NULL;
+    q->count = 0;
     /* TODO: Initialize the queue */
 }
 
@@ -27,6 +31,18 @@ void initialize(queue *q) {
  * Post-condition: x is added to the rear of the queue
  */
 void enqueue(queue *q, int x) {
+    assert(q != NULL);
+    node *new_node = malloc(sizeof(node));
+    new_node->data = x;
+    new_node->next = NULL;
+    if (q->rear == NULL) {
+        q->front = new_node;
+        q->rear = new_node;
+    } else {
+        q->rear->next = new_node;
+        q->rear = new_node;
+    }
+    q->count++;
     /* TODO: Implement enqueue */
 }
 
@@ -38,8 +54,16 @@ void enqueue(queue *q, int x) {
  * Post-condition: front item is removed and returned
  */
 int dequeue(queue *q) {
-    /* TODO: Implement dequeue */
-    return 0;  
+    assert(q->front != NULL);
+    node *temp = q->front;
+    int data = temp->data;
+    q->front = q->front->next;
+    if (q->front == NULL) {
+        q->rear = NULL;
+    }
+    free(temp);
+    q->count--;
+    return data;
 }
 
 /* 
@@ -48,8 +72,13 @@ int dequeue(queue *q) {
  * Returns: true if queue is empty, false otherwise
  */
 bool empty(const queue *q) {
+    if (q->count == 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
     /* TODO: Implement empty check */
-    return false; 
 }
 
 /* 
@@ -58,6 +87,7 @@ bool empty(const queue *q) {
  * Returns: true if queue is full, false otherwise
  */
 bool full(const queue *q) {
+    (void)q;
     /* TODO: Implement full check */
     return false;
 }
